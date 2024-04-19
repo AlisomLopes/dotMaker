@@ -58,7 +58,7 @@ body{
 }
 .container-button > button:hover{
     color: var(--color-white);
-    transform: scale(1.02);
+    transform: scale(1.05);
     transition: 0.3s;
     z-index: 4;
 }

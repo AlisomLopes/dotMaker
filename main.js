@@ -1,92 +1,74 @@
 const clickableArea = document.getElementById('clickableArea');
-const listaDeClicks = document.getElementById('listaDeClicks');
-const buttonAction = document.querySelectorAll('.container-button > button');
-const arrayDot = [];
-const dotApagados = [];
+const clickList     = document.getElementById('clickList');
+const buttonAction  = document.querySelectorAll('.container-button > button');
+const arrayDot      = [];
+const dotErased     = [];
 
-//Armazenando as dot na estrutura de dados pilha
-class Pilha
+//Storing dots in the stack data structure
+class Stack
 {
-    constructor(dotPositionX, dotPositionY)
+    constructor(dotPositionY, dotPositionX)
     {
-        this.dotPositionX = dotPositionX;
         this.dotPositionY = dotPositionY;
-        this.dotPosition = [this.dotPositionX, this.dotPositionY];
+        this.dotPositionX = dotPositionX;
+        this.dotPosition = [ this.dotPositionY, this.dotPositionX];
     }
 }
 
-/*
-Pegando a posição dos clicks, adicionando os Dots e passando as posições dos Dots para 
-a class Pilha
-*/
+//Taking the position of the clicks, adding the Dots and passing the positions of the Dots to the Stack class
 clickableArea.addEventListener('click', (e) =>
 {
     const positionX = e.pageX;
     const positionY = e.pageY;
 
-    listaDeClicks.innerHTML += 
+    clickList.innerHTML += 
     `<div class="dot" style= "inset: ${positionY}px ${positionX}px;"></div>`;
 
-    arrayDot.push(new Pilha(positionX, positionY));
+    arrayDot.push(new Stack(positionY, positionX));
     console.log(arrayDot);
 });
 
-/* 
-Pegando os valores dos botões e adicionando ações a eles
-*/
+//Getting button values and adding actions to them
 buttonAction.forEach((btn) =>
 {
     btn.addEventListener('click', (e) =>
     {
-        const value = e.target.innerText;
+        const PressedBtnValue = e.target.value;
 
-        switch (value)
+        switch (PressedBtnValue)
         {
             case 'undo':
                 if(arrayDot.length === 0) return;
 
-                dotApagados.push(new Pilha(arrayDot[arrayDot.length - 1].dotPositionX, arrayDot[arrayDot.length - 1].dotPositionY));
+                dotErased.push(new Stack(arrayDot[arrayDot.length - 1].dotPositionY, arrayDot[arrayDot.length - 1].dotPositionX));
                 
 
                 arrayDot.pop([arrayDot.length -1]);
                 
                 console.log(arrayDot);
-                console.log(dotApagados);
+                console.log(dotErased);
 
-                document.querySelector('#listaDeClicks > *:last-child')?.remove();
+                document.querySelector('#clickList > *:last-child')?.remove();
                 break;
 
             case 'return':
-                if(dotApagados.length === 0) return;
+                if(dotErased.length === 0) return;
 
-                listaDeClicks.innerHTML += 
-                `<div class="dot" style= "inset: ${dotApagados[dotApagados.length -1].dotPositionY}px ${dotApagados[dotApagados.length -1].dotPositionX}px;"></div>`;
+                clickList.innerHTML += 
+                `<div class="dot" style= "inset: ${dotErased[dotErased.length -1].dotPositionY}px ${dotErased[dotErased.length -1].dotPositionX}px;"></div>`;
 
-                arrayDot.push(dotApagados[dotApagados.length -1]);
-                dotApagados.pop(dotApagados[dotApagados.length -1]);
+                arrayDot.push(dotErased[dotErased.length -1]);
+                dotErased.pop(dotErased[dotErased.length -1]);
 
                 console.log(arrayDot);
-                console.log(dotApagados);
+                console.log(dotErased);
                 break;
 
             case 'reset':
-                document.querySelectorAll('#listaDeClicks > .dot').forEach(e => e.remove());
+                document.querySelectorAll('#clickList > .dot').forEach(e => e.remove());
                 while(arrayDot.length) arrayDot.pop();
-                while(dotApagados.length) dotApagados.pop();
+                while(dotErased.length) dotErased.pop();
                 break;
         }
     });
 });
-
-//<div class="dot" style= "inset: ${positionY}px ${positionX}px;"></div>
-/*
-    Pegar o evento e cordenadas do click do usuario; ✅
-    Adicionar um Dot na posição onde foi clicado; ✅
-    Anotar a posição do Dot em uma ED de pilha; ✅
-    Adicionar o evento de apagar o ultimo Dot apagado quando o
-usuario clicar no button undo; ✅
-    Adicionar o evento de recuperar o(s) ultimo(s) Dot(s) quando o
-usuario clicar no button return; ✅
-    Adicionar o evento de apagar todos os Dots quando o
-usuario clicar no button reset; ✅
-*/
