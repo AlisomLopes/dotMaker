@@ -2,7 +2,7 @@ const clickableArea = document.getElementById('clickableArea');
 const listaDeClicks = document.getElementById('listaDeClicks');
 const buttonAction = document.querySelectorAll('.container-button > button');
 const arrayDot = [];
-var dotApagados = [];
+const dotApagados = [];
 
 //Armazenando as dot na estrutura de dados pilha
 class Pilha
@@ -46,10 +46,12 @@ buttonAction.forEach((btn) =>
                 if(arrayDot.length === 0) return;
 
                 dotApagados.push(new Pilha(arrayDot[arrayDot.length - 1].dotPositionX, arrayDot[arrayDot.length - 1].dotPositionY));
-                console.log(dotApagados);
+                
 
                 arrayDot.pop([arrayDot.length -1]);
+                
                 console.log(arrayDot);
+                console.log(dotApagados);
 
                 document.querySelector('#listaDeClicks > *:last-child')?.remove();
                 break;
@@ -60,10 +62,10 @@ buttonAction.forEach((btn) =>
                 listaDeClicks.innerHTML += 
                 `<div class="dot" style= "inset: ${dotApagados[dotApagados.length -1].dotPositionY}px ${dotApagados[dotApagados.length -1].dotPositionX}px;"></div>`;
 
-                arrayDot.push(dotApagados[0]);
-                console.log(arrayDot);
+                arrayDot.push(dotApagados[dotApagados.length -1]);
+                dotApagados.pop(dotApagados[dotApagados.length -1]);
 
-                dotApagados.pop(dotApagados[0]);
+                console.log(arrayDot);
                 console.log(dotApagados);
                 break;
 
