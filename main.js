@@ -26,6 +26,8 @@ clickableArea.addEventListener('click', (e) =>
 
     arrayDot.push(new Stack(positionY, positionX));
     console.log(arrayDot);
+
+    while(dotErased.length) dotErased.pop(); //Clears the entire dotErased if added a new dot
 });
 
 //Getting button values and adding actions to them
@@ -40,7 +42,7 @@ buttonAction.forEach((btn) =>
             case 'undo':
                 if(arrayDot.length === 0) return;
 
-                dotErased.push(new Stack(arrayDot[arrayDot.length - 1].dotPositionY, arrayDot[arrayDot.length - 1].dotPositionX));
+                dotErased.push(new Stack(arrayDot[arrayDot.length - 1].dotPositionY, arrayDot[arrayDot.length - 1].dotPositionX)); 
                 
 
                 arrayDot.pop([arrayDot.length -1]);
